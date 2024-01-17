@@ -12,12 +12,8 @@ class UserRead(schemas.BaseUser[int]):
     is_superuser: bool = False
     is_verified: bool = False
 
-    if PYDANTIC_V2:  # pragma: no cover
-        model_config = ConfigDict(from_attributes=True)  # type: ignore
-    else:  # pragma: no cover
-
-        class Config:
-            orm_mode = True
+    class Config:
+        orm_mode = True
 
 
 class UserCreate(schemas.BaseUserCreate):

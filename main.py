@@ -6,7 +6,18 @@ from fastapi import FastAPI, Request, status, Depends
 from fastapi.encoders import jsonable_encoder
 from fastapi.exceptions import ResponseValidationError
 from fastapi.responses import JSONResponse
+from fastapi_users import fastapi_users, FastAPIUsers
 from pydantic import BaseModel, Field
+
+from auth.auth import auth_backend
+from auth.database import User
+from auth.manager import get_user_manager
+from auth.schemas import UserRead, UserCreate
+
+fastapi_users = FastAPIUsers[User, int](
+    get_user_manager,
+    [auth_backend],
+)
 
 app = FastAPI(
     title="Bulletin board"
@@ -21,15 +32,15 @@ async def validation_exception_handler(request: Request, exc: ResponseValidation
     )
 
 
-async def common_parameters(q: str | None = None, skip: int = 0, limit: int = 100):
-    return {"q": q, "skip": skip, "limit": limit}
+app.include_router(
+    fastapi_users.get_auth_router(auth_backend),
+    prefix="/auth/jwt",
+    tags=["auth"],
+)
 
 
-@app.get("/items/")
-async def read_items(commons: Annotated[dict, Depends(common_parameters)]):
-    return commons
-
-
-@app.get("/users/")
-async def read_users(commons: Annotated[dict, Depends(common_parameters)]):
-    return commons
+app.include_router(
+    fastapi_users.get_register_router(UserRead, UserCreate),
+    prefix="/auth",
+    tags=["auth"],
+)
