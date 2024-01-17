@@ -23,6 +23,8 @@ app = FastAPI(
     title="Bulletin board"
 )
 
+current_active_user = fastapi_users.current_user(active=True)
+
 
 @app.exception_handler(ResponseValidationError)
 async def validation_exception_handler(request: Request, exc: ResponseValidationError):
@@ -44,3 +46,8 @@ app.include_router(
     prefix="/auth",
     tags=["auth"],
 )
+
+
+@app.get("/")
+def protected_route(user: User = Depends(current_active_user)):
+    return f"Hello, {user.email}"
