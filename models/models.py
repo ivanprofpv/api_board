@@ -4,6 +4,7 @@ from sqlalchemy import MetaData, Table, Column, Integer, String, TIMESTAMP, Fore
 
 metadata = MetaData()
 
+
 role = Table(
     "role",
     metadata,
