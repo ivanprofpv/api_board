@@ -13,13 +13,14 @@ router = APIRouter(
 
 
 @router.get("/")
-async def get_board_on_category(board_category: int, session: AsyncSession = Depends(get_async_session)):
+async def get_board_on_category(board_category: int, session: AsyncSession = Depends(get_async_session),
+                                limit: int = 3, offset: int = 0):
     try:
         query = select(announcement_card).where(announcement_card.c.category_id == board_category)
         result = await session.execute(query)
         return {
             "status": "success",
-            "data": result.mappings().all(),
+            "data": result.mappings().all()[offset:][:limit],
             "details": None
         }
     except Exception:
