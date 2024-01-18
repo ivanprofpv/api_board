@@ -9,6 +9,8 @@ from src.auth.manager import get_user_manager
 from src.auth.schemas import UserRead, UserCreate
 from src.auth.models import User
 
+from src.board.router import router as router_board
+
 fastapi_users = FastAPIUsers[User, int](
     get_user_manager,
     [auth_backend],
@@ -43,6 +45,9 @@ app.include_router(
 )
 
 
-@app.get("/")
+@app.get("/account")
 def protected_route(user: User = Depends(current_active_user)):
     return f"Hello, {user.email}"
+
+
+app.include_router(router_board)
