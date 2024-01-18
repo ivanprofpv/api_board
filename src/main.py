@@ -10,6 +10,7 @@ from src.auth.schemas import UserRead, UserCreate
 from src.auth.models import User
 
 from src.board.router import router as router_board
+from src.category.router import router as router_category
 
 fastapi_users = FastAPIUsers[User, int](
     get_user_manager,
@@ -51,3 +52,4 @@ def protected_route(user: User = Depends(current_active_user)):
 
 
 app.include_router(router_board)
+app.include_router(router_category)
