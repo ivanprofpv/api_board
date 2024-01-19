@@ -24,7 +24,9 @@ async def get_board_on_category(board_category: int, session: AsyncSession = Dep
         }
     except Exception:
         raise HTTPException(status_code=400, detail={
-            "status": "error"
+            "status": "error",
+            "data": None,
+            "details": None
         })
 
 
@@ -40,7 +42,9 @@ async def post_board(new_card: AdCardCreate, session: AsyncSession = Depends(get
         }
     except Exception:
         raise HTTPException(status_code=400, detail={
-            "status": "card not save"
+            "status": "card not save",
+            "data": None,
+            "details": None
         })
 
 
