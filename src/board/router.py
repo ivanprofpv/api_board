@@ -1,4 +1,5 @@
 from fastapi import APIRouter, Depends, HTTPException
+from fastapi_cache.decorator import cache
 from sqlalchemy import select, insert, update, delete
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -13,6 +14,7 @@ router = APIRouter(
 
 
 @router.get("/")
+@cache(expire=10)
 async def get_board_on_category(board_category: int, session: AsyncSession = Depends(get_async_session),
                                 limit: int = 3, offset: int = 0):
     try:
