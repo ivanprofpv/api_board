@@ -20,6 +20,7 @@ async_session_maker = sessionmaker(engine_test, class_=AsyncSession, expire_on_c
 
 metadata.bind = engine_test
 
+
 async def override_get_async_session() -> AsyncGenerator[AsyncSession, None]:
     """
     Переписываем зависимость, чтобы использовать тестовую БД (другую БД),
@@ -43,8 +44,6 @@ async def prepare_database():
     yield
     async with engine_test.begin() as conn:
         await conn.run_sync(metadata.drop_all)
-
-
 
     @pytest.fixture(scope="session")
     def event_loop():

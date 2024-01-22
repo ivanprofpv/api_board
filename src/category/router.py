@@ -30,14 +30,14 @@ async def get_category(session: AsyncSession = Depends(get_async_session),
         })
 
 
-@router.post("/")
+@router.post("/add")
 async def post_category(new_card: CategoryCreate, session: AsyncSession = Depends(get_async_session)):
     try:
         stmt = insert(category).values(**new_card.model_dump())
         await session.execute(stmt)
         await session.commit()
         return {
-            "status": 200
+            "status": "success",
         }
     except Exception:
         raise HTTPException(status_code=500, detail={
