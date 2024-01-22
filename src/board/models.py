@@ -1,8 +1,8 @@
-from sqlalchemy import Table, Column, Integer, String, TIMESTAMP, ForeignKey, MetaData
+from sqlalchemy import Table, Column, Integer, String, TIMESTAMP, ForeignKey
 
 from src.category.models import category
+from src.database import metadata
 
-metadata = MetaData()
 
 announcement_card = Table(
     "announcement_card",

@@ -1,6 +1,6 @@
-from sqlalchemy import Table, Column, Integer, String, TIMESTAMP, ForeignKey, MetaData
+from sqlalchemy import Table, Column, Integer, String, TIMESTAMP, ForeignKey
 
-metadata = MetaData()
+from src.database import metadata
 
 category = Table(
     "category",
