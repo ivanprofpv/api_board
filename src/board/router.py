@@ -20,7 +20,7 @@ async def get_board_on_id(id: int, session: AsyncSession = Depends(get_async_ses
         result = await session.execute(query)
         return {
             "status": "success",
-            "data": result.mappings().all()
+            "data": result.mappings().first()
         }
     except Exception:
         raise HTTPException(status_code=400, detail={
