@@ -12,8 +12,8 @@ router = APIRouter(
 )
 
 
-@router.get("/")
-async def get_category(session: AsyncSession = Depends(get_async_session),
+@router.get("/all_category")
+async def get_all_category(session: AsyncSession = Depends(get_async_session),
                        limit: int = 3, offset: int = 0):
     try:
         query = select(category).limit(limit).offset(offset)
@@ -21,6 +21,23 @@ async def get_category(session: AsyncSession = Depends(get_async_session),
         return {
             "status": "success",
             "data": result.mappings().all()[offset:][:limit]
+        }
+    except Exception:
+        raise HTTPException(status_code=500, detail={
+            "status": "error",
+            "data": None,
+            "details": "Error 500"
+        })
+
+
+@router.get("/")
+async def get_category(id: int, session: AsyncSession = Depends(get_async_session)):
+    try:
+        query = select(category).where(category.c.id == id)
+        result = await session.execute(query)
+        return {
+            "status": "success",
+            "data": result.mappings().first()
         }
     except Exception:
         raise HTTPException(status_code=500, detail={

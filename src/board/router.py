@@ -14,6 +14,23 @@ router = APIRouter(
 
 
 @router.get("/")
+async def get_board_on_id(id: int, session: AsyncSession = Depends(get_async_session)):
+    try:
+        query = select(announcement_card).where(announcement_card.c.id == id)
+        result = await session.execute(query)
+        return {
+            "status": "success",
+            "data": result.mappings().all()
+        }
+    except Exception:
+        raise HTTPException(status_code=400, detail={
+            "status": "error",
+            "data": None,
+            "details": None
+        })
+
+
+@router.get("/board_in_category")
 @cache(expire=10)
 async def get_board_on_category(board_category: int, session: AsyncSession = Depends(get_async_session),
                                 limit: int = 3, offset: int = 0):
