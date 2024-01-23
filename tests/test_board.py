@@ -66,3 +66,12 @@ async def test_get_board_on_id(ac: AsyncClient):
     assert response.status_code == 200
     assert response.json()["status"] == "success"
     assert response.json()["data"]["id"] == 6
+
+
+async def test_delete_card(prepare_database, ac: AsyncClient):
+    response = await ac.delete("/board/delete", params={
+        "id_card": "6"
+    })
+
+    assert response.status_code == 200
+    assert response.json()["status"] == "success"
