@@ -28,16 +28,6 @@ async def test_post_board(ac: AsyncClient):
     assert response.status_code == 200, "Ошибка, пост не создался"
 
 
-async def test_get_board_on_id(ac: AsyncClient):
-    response = await ac.get("/board/", params={
-        "id": 6
-    })
-
-    assert response.status_code == 200
-    assert response.json()["status"] == "success"
-    assert response.json()["data"]["id"] == 6
-
-
 async def test_get_board_on_category(ac: AsyncClient):
     response = await ac.get("/board/board_in_category", params={
         "board_category": 1
@@ -49,8 +39,13 @@ async def test_get_board_on_category(ac: AsyncClient):
 
 
 async def test_edit_board(ac: AsyncClient):
-    response = await ac.put("/board/edit?id_card=6", json={
-        "title": "new_title"
+    response = await ac.put("/board/edit?id=6", json={
+        "title": "new_title",
+        "text": "string",
+        "price": 1,
+        "photo": "string",
+        "date": "2024-01-23T14:51:16.944",
+        "category_id": 1
     })
 
     response_check_new_title = await ac.get("/board/", params={
@@ -60,4 +55,14 @@ async def test_edit_board(ac: AsyncClient):
 
     assert response.status_code == 200
     assert response.json()["status"] == "success"
-  #  assert title == "new_title"
+    assert title == "new_title"
+
+
+async def test_get_board_on_id(ac: AsyncClient):
+    response = await ac.get("/board/", params={
+        "id": 6
+    })
+
+    assert response.status_code == 200
+    assert response.json()["status"] == "success"
+    assert response.json()["data"]["id"] == 6

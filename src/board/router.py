@@ -68,9 +68,9 @@ async def post_board(new_card: AdCardCreate, session: AsyncSession = Depends(get
 
 
 @router.put("/edit")
-async def edit_board(id_card: int, edit_card: AdCardEdit, session: AsyncSession = Depends(get_async_session)):
+async def edit_board(id: int, edit_card: AdCardEdit, session: AsyncSession = Depends(get_async_session)):
     try:
-        stmt = update(announcement_card).where(announcement_card.c.id == id_card).values(**edit_card.model_dump())
+        stmt = update(announcement_card).where(announcement_card.c.id == id).values(**edit_card.model_dump())
         await session.execute(stmt)
         await session.commit()
         return {
