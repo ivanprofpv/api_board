@@ -5,6 +5,7 @@ from fastapi.responses import JSONResponse
 from fastapi_cache import FastAPICache
 from fastapi_cache.backends.redis import RedisBackend
 from fastapi_users import FastAPIUsers
+from fastapi.middleware.cors import CORSMiddleware
 
 from src.auth.base_config import auth_backend
 from src.auth.manager import get_user_manager
@@ -27,6 +28,21 @@ app = FastAPI(
 )
 
 current_active_user = fastapi_users.current_user(active=True)
+
+
+origins = [
+    "http://localhost",
+    "http://localhost:8000",
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["GET", "POST", "OPTIONS", "DELETE", "PATCH", "PUT"],
+    allow_headers=["Content-Type", "Set-Cookie", "Access-Control-Allow-Headers", "Access-Control-Allow-Origin",
+                   "Authorization"],
+)
 
 
 @app.exception_handler(ResponseValidationError)
