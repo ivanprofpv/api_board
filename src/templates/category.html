@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="flex justify-center flex-col items-center">
+    <div class="flex my-3 gap-5">
+        Категории
+    </div>
+    {% for category in categories %}
+        <div class="flex rounded-3 border-2 p-3 mt-5">
+            <img width="150" src="{{ url_for('static', path='1599896359_5.jpg') }}" alt="fon" class="mr-5">
+            <div class="flex flex-col">
+                <span class="text-2xl font-bold">Название категории: {{ category.title }}</span>
+            </div>
+        </div>
+    {% endfor %}
+</div>
+{% endblock %}

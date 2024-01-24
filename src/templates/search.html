@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block head %}
+<script>
+    const searchForCard = () => {
+        const searchInputValue = document.getElementById("card_search").value;
+        window.location.href = `/pages/details/${searchInputValue}`;
+    }
+</script>
+{% endblock %}
+{% block title %}{% endblock %}
+{% block content %}
+<div class="flex justify-center flex-col items-center">
+    <div class="flex my-3 gap-5">
+        <input id="card_search" type="text" placeholder="Категория" class="text-xl">
+        <button onclick="searchForCard()" class="border-2 rounded-3xl bg-gray-300 p-3">Поиск</button>
+    </div>
+    <span>Например, Одежда</span>
+    {% for card in cards %}
+        <div class="flex rounded-3 border-2 p-3 mt-5">
+            <img width="150" src="{{ url_for('static', path='1599896359_5.jpg') }}" alt="fon" class="mr-5">
+            <div class="flex flex-col">
+                <span class="text-2xl font-bold">Название: {{ card.title }}</span>
+                <span class="text-lg">Описание: {{ card.text }}</span>
+                <span class="text-lg">Цена: {{ card.price }}</span>
+                <span class="text-lg">Дата: {{ card.date }}</span>
+            </div>
+        </div>
+    {% endfor %}
+</div>
+{% endblock %}

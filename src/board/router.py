@@ -5,6 +5,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.board.models import announcement_card
 from src.board.schemas import AdCardCreate, AdCardEdit
+from src.category.models import category
 from src.database import get_async_session
 
 router = APIRouter(
@@ -32,10 +33,13 @@ async def get_board_on_id(id: int, session: AsyncSession = Depends(get_async_ses
 
 @router.get("/board_in_category")
 @cache(expire=10)
-async def get_board_on_category(board_category: int, session: AsyncSession = Depends(get_async_session),
+async def get_board_on_category(title_category: str, session: AsyncSession = Depends(get_async_session),
                                 limit: int = 3, offset: int = 0):
     try:
-        query = select(announcement_card).where(announcement_card.c.category_id == board_category)
+        query_select_category = select(category).filter(category.c.title == title_category)
+        result_category = await session.execute(query_select_category)
+        category_obj = result_category.fetchone()
+        query = select(announcement_card).where(announcement_card.c.category_id == category_obj.id)
         result = await session.execute(query)
         return {
             "status": "success",

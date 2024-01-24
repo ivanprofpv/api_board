@@ -6,6 +6,7 @@ from fastapi_cache import FastAPICache
 from fastapi_cache.backends.redis import RedisBackend
 from fastapi_users import FastAPIUsers
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 
 from src.auth.base_config import auth_backend
 from src.auth.manager import get_user_manager
@@ -15,6 +16,7 @@ from src.auth.models import User
 from src.board.router import router as router_board
 from src.category.router import router as router_category
 from src.tasks.router import router as router_tasks
+from src.pages.router import router as router_pages
 
 from redis import asyncio as aioredis
 
@@ -28,6 +30,7 @@ app = FastAPI(
 )
 
 current_active_user = fastapi_users.current_user(active=True)
+app.mount("/src", StaticFiles(directory="src/static"), name="static")
 
 
 origins = [
@@ -75,6 +78,7 @@ def protected_route(user: User = Depends(current_active_user)):
 app.include_router(router_board)
 app.include_router(router_category)
 app.include_router(router_tasks)
+app.include_router(router_pages)
 
 
 @app.on_event("startup")
