@@ -15,6 +15,7 @@ from src.auth.models import User
 
 from src.board.router import router as router_board
 from src.category.router import router as router_category
+from src.config import REDIS_HOST, REDIS_PORT
 from src.tasks.router import router as router_tasks
 from src.pages.router import router as router_pages
 
@@ -83,5 +84,5 @@ app.include_router(router_pages)
 
 @app.on_event("startup")
 async def startup():
-    redis = aioredis.from_url("redis://localhost")
+    redis = aioredis.from_url(f"redis://{REDIS_HOST}:{REDIS_PORT}", encoding="utf8", decode_responses=True)
     FastAPICache.init(RedisBackend(redis), prefix="fastapi-cache")
