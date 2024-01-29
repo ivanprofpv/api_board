@@ -21,4 +21,5 @@
 - Postgresql (с адаптером psycopg2);
 - celery '5.3.6';
 - flower '2.0.1';
-- Jinja2 '3.1.3'.
+- Jinja2 '3.1.3';
+- pytest '7.4.4'.
